@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { backendApi } from '../utils/backend-api.jsx';
+import { backendApi } from "../../utils/backend-api.jsx";
 import ProductCard from './product-card';
 
 export default function ProductList() {
@@ -7,12 +7,12 @@ export default function ProductList() {
 
     useEffect(() => {
         backendApi.get('/products')
-        .then(response => {
-            setProducts(response.data);
-        })
-        .catch(error => {
-            console.error('Error fetching products:', error);
-        });
+            .then(response => {
+                setProducts(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching products:', error);
+            });
     }, []);
 
     return (

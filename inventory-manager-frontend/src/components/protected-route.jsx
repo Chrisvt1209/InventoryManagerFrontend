@@ -1,3 +1,4 @@
+import { useAuth } from "../providers/auth-provider.jsx";
 import { Navigate, Outlet } from "react-router-dom";
 import PropTypes from "prop-types";
 
