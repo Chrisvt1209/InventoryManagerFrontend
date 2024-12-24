@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useForm } from "react-hoom-form";
+import { useForm } from "react-hook-form";
 import { backendApi } from "../../../utils/backend-api.jsx";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -8,7 +8,7 @@ export default function Register() {
     const { register, handleSubmit, formState: { errors }, watch } = useForm({
         mode: "onBlur"
     });
-    const setErrorMessage = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
     const handleRegisterUser = async (data) => {
         setErrorMessage("");
@@ -40,6 +40,7 @@ export default function Register() {
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                 <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">Create an account</h1>
                 <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit(handleRegisterUser)}>
+                    {setErrorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
                     <div className="mb-4">
                         <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-700 dark:text-white">Email</label>
                         <input
@@ -53,6 +54,7 @@ export default function Register() {
                         {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
                     </div>
 
+                    {/* First name */}
                     <div className="mb-4">
                         <label htmlFor="firstName" className="block mb-2 text-sm font-medium text-gray-700 dark:text-white">First name</label>
                         <input
@@ -65,6 +67,7 @@ export default function Register() {
                         {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName.message}</p>}
                     </div>
 
+                    {/* Last name */}
                     <div className="mb-4">
                         <label htmlFor="lastName" className="block mb-2 text-sm font-medium text-gray-700 dark:text-white">Last name</label>
                         <input
@@ -77,6 +80,7 @@ export default function Register() {
                         {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName.message}</p>}
                     </div>
 
+                    {/* Password */}
                     <div className="mb-4">
                         <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-700 dark:text-white">Password</label>
                         <input
@@ -95,6 +99,7 @@ export default function Register() {
                         {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
                     </div>
 
+                    {/* Confirm password */}
                     <div className="mb-4">
                         <label htmlFor="confirmPassword" className="block mb-2 text-sm font-medium text-gray-700 dark:text-white">Confirm password</label>
                         <input
