@@ -6,7 +6,10 @@ import Root from './pages/root'
 import ProtectedRoute from './components/protected-route'
 
 import ProductOverview from './pages/products/product-overview'
+
 import Register from './pages/users/authentication/register'
+import Login from './pages/users/authentication/login'
+import Logout from './pages/users/authentication/logout'
 
 import './index.css'
 
@@ -30,6 +33,14 @@ const router = createBrowserRouter([
           {
             path: "register",
             element: <Register />
+          },
+          {
+            path: "login",
+            element: <Login />
+          },
+          {
+            path: "logout",
+            element: <Logout />
           }
         ]
       },
