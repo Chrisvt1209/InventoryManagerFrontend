@@ -1,6 +1,6 @@
 import Navbar from "../components/navbar.jsx";
 import { Outlet } from "react-router-dom";
-import { useTokenExpirationCheck } from "../hooks/use-token-expiration-check.jsx";
+import useTokenExpirationCheck from "../hooks/use-token-expiration-check.jsx";
 
 export default function Root() {
     useTokenExpirationCheck();
