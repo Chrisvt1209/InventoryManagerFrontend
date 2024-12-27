@@ -14,9 +14,9 @@ export default function Register() {
         setErrorMessage("");
         try {
             const response = await backendApi.post('/users/register', JSON.stringify({
+                email: data.email,
                 firstName: data.firstName,
                 lastName: data.lastName,
-                email: data.email,
                 password: data.password
             }), {
                 headers: {

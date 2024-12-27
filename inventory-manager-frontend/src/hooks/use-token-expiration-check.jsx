@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useAuth } from "../providers/auth-provider";
-import jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 export default function useTokenExpirationCheck() {
     const { token, updateToken, setLoggedInUser } = useAuth();

@@ -19,7 +19,7 @@ export default function Login() {
             const response = await backendApi.post("/users/login", value);
             console.log("Login successful: ", response);
             updateToken(response.data.token);
-            navigate("/");
+            navigate("/products");
         } catch (error) {
             console.error("Login failed: ", error);
             if (error?.response?.status === 403) {
