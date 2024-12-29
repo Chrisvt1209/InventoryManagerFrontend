@@ -8,7 +8,7 @@ export default function Login() {
     const navigate = useNavigate();
     const { updateToken } = useAuth();
     const [errorMessage, setErrorMessage] = useState('');
-    const { register, handleSubmit, formState: { errors } } = useForm({
+    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({
         mode: "onBlur"
     });
 
@@ -16,7 +16,10 @@ export default function Login() {
         setErrorMessage("");
 
         try {
-            const response = await backendApi.post("/users/login", value);
+            const response = await backendApi.post("/users/login", value, {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true
+            });
             console.log("Login successful: ", response);
             updateToken(response.data.token);
             navigate("/products");
@@ -25,7 +28,7 @@ export default function Login() {
             if (error?.response?.status === 403) {
                 setErrorMessage("Invalid username or password");
             } else {
-                setErrorMessage("An error occurred");
+                setErrorMessage(error?.response?.data?.message || "An unexpected error occurred");
             }
         }
     };
@@ -34,9 +37,12 @@ export default function Login() {
         <div className="flex justify-center items-center min-h-screen bg-gray-100">
             <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
                 <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
-                <form onSubmit={handleSubmit(handleLogin)}>
+                <form onSubmit={handleSubmit(handleLogin)} className="space-y-4">
+                    {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
+
+                    {/* Email */}
                     <div className="mb-4">
-                        <label className="block text-gray-700">Email</label>
+                        <label htmlFor="email" className="block text-gray-700">Email</label>
                         <input
                             type="email"
                             id="email"
@@ -48,20 +54,32 @@ export default function Login() {
                                     message: "Use a valid email address"
                                 }
                             })}
+                            placeholder="email@example.com"
                         />
                         {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
                     </div>
+
+                    {/* Password */}
                     <div className="mb-4">
-                        <label className="block text-gray-700">Password</label>
+                        <label htmlFor="password" className="block text-gray-700">Password</label>
                         <input
                             type="password"
+                            id="password"
                             className="w-full px-3 py-2 border rounded-lg"
                             {...register("password", { required: "Password is required" })}
                         />
                         {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
                     </div>
-                    {errorMessage && <p className="text-red-500 text-sm mb-4">{errorMessage}</p>}
-                    <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">Login</button>
+
+                    <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className={`w-full py-2 rounded-lg ${isSubmitting
+                            ? "bg-blue-300"
+                            : "bg-blue-500 hover:bg-blue-600 text-white"
+                            }`}>
+                        {isSubmitting ? "Logging in..." : "Login"}
+                    </button>
                 </form>
             </div>
         </div>

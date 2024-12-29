@@ -1,14 +1,15 @@
 import axios from 'axios';
 
-const {VITE_BACKEND_API_URL} = import.meta.env;
+const { VITE_BACKEND_API_URL } = import.meta.env;
 
 export const backendApi = axios.create({
     baseURL: VITE_BACKEND_API_URL,
-    headers: {'Content-Type': 'application/json'}
+    headers: { 'Content-Type': 'application/json' },
+    withCredentials: true
 });
 
 backendApi.interceptors.request.use(config => {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }

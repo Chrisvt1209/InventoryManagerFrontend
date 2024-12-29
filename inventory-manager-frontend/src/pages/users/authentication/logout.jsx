@@ -6,16 +6,12 @@ export default function Logout() {
     const navigate = useNavigate();
     const { updateToken } = useAuth();
 
-    const handleLogout = () => {
+    useEffect(() => {
         updateToken(null);
         navigate("/auth/login");
-    };
-
-    useEffect(() => {
-        handleLogout();
-    }, []);
+    }, [updateToken, navigate]);
 
     return (
-        <div>Logging out...</div>
+        <div className="flex justify-center items-center min-h-screen bg-gray-100 text-gray-700 text-lg font-semibold" aria-live="polite">Logging out, please wait...</div>
     );
 }

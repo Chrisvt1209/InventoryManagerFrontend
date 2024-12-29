@@ -7,7 +7,7 @@ export default function Root() {
     return (
         <>
             <Navbar />
-            <div className="container">
+            <div className="container mx-auto">
                 <div className="nav-size"></div> {/* This is a hack to make sure the content doesn't go under the navbar */}
                 <Outlet />
             </div>

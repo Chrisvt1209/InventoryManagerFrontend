@@ -7,7 +7,7 @@ export default function ProtectedRoute({ roles = [] }) {
 
     if (!token) {
         console.log("User is not authenticated. Redirecting to login page.");
-        return <Navigate to="/login" />;
+        return <Navigate to="/auth/login" />;
     }
 
     if (roles.length > 0 && !roles.includes(loggedInUser?.role)) {

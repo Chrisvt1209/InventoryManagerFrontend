@@ -5,37 +5,39 @@ import { backendApi } from "../utils/backend-api.jsx";
 const AuthContext = createContext(null);
 
 export default function AuthProvider({ children }) {
-    const [token, setToken] = useState(localStorage.getItem("token"));
-    const [loggedInUser, setLoggedInUser] = useState(JSON.parse(localStorage.getItem("loggedInUser")));
+    const [token, setToken] = useState(sessionStorage.getItem("token"));
+    const [loggedInUser, setLoggedInUser] = useState(() => JSON.parse(sessionStorage.getItem("loggedInUser")));
+    const [loading, setLoading] = useState(false);
 
     const updateToken = (newToken) => {
         setToken(newToken);
-    }
+    };
 
     const refreshUserInfo = async () => {
-        if (token) {
-            try {
-                const response = await backendApi.get("/users/me");
-                setLoggedInUser(response.data);
-                localStorage.setItem("loggedInUser", JSON.stringify(response.data));
-            } catch (error) {
-                console.error("Failed to refresh user info:", error);
-                setLoggedInUser(null);
-                localStorage.removeItem("loggedInUser");
-            }
+        setLoading(true);
+        try {
+            const response = await backendApi.get("/users/me", {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            setLoggedInUser(response.data);
+            sessionStorage.setItem("loggedInUser", JSON.stringify(response.data));
+        } catch (error) {
+            console.error("Failed to refresh user info: ", error);
+            setLoggedInUser(null);
+            sessionStorage.removeItem("loggedInUser");
+        } finally {
+            setLoading(false);
         }
-    }
+    };
 
     useEffect(() => {
         if (token) {
-            backendApi.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-            localStorage.setItem("token", token);
-            refreshUserInfo().then();
+            sessionStorage.setItem("token", token);
+            refreshUserInfo();
         } else {
-            delete backendApi.defaults.headers.common["Authorization"];
-            localStorage.removeItem("token");
+            sessionStorage.removeItem("token");
             setLoggedInUser(null);
-            localStorage.removeItem("loggedInUser");
+            sessionStorage.removeItem("loggedInUser");
         }
     }, [token]);
 
@@ -43,8 +45,9 @@ export default function AuthProvider({ children }) {
         token,
         updateToken,
         loggedInUser,
-        refreshUserInfo
-    }), [token, loggedInUser]);
+        refreshUserInfo,
+        loading
+    }), [token, loggedInUser, loading]);
 
     return (
         <AuthContext.Provider value={contextValue}>
@@ -62,5 +65,5 @@ export const useAuth = () => {
 };
 
 AuthProvider.propTypes = {
-    children: PropTypes.node.isRequired
-}
+    children: PropTypes.node.isRequired,
+};

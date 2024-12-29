@@ -5,8 +5,8 @@ export default function NavBar() {
     const { loggedInUser } = useAuth();
 
     return (
-        <nav className="bg-gray-600 fixed top-0 w-full shadow-md">
-            <div className="container mx-auto flex justify-between items-center p4">
+        <nav className="bg-gray-800 fixed top-0 w-full shadow-md z-10">
+            <div className="container mx-auto flex justify-between items-center p-4">
                 <Link to="/" className="text-white text-2xl font-bold">Inventory Manager</Link>
                 <button className="text-white md:hidden" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false"
@@ -21,21 +21,11 @@ export default function NavBar() {
                         <>
                             <ul className="flex space-x-4">
                                 <li>
-                                    <Link to="/products" className="text-white hover:text-gray-300">Kamplocaties</Link>
+                                    <Link to="/products" className="text-white hover:text-gray-300">Products</Link>
                                 </li>
                                 <li>
-                                    <Link to="/categories" className="text-white hover:text-gray-300">Bezoeken</Link>
+                                    <Link to="/categories" className="text-white hover:text-gray-300">Categories</Link>
                                 </li>
-                                {/* {loggedInUser.role === UserRole.ADMIN && (
-                                    <>
-                                        <li>
-                                            <Link to="users" className="text-white hover:text-gray-300">Gebruikers</Link>
-                                        </li>
-                                        <li>
-                                            <Link to="branches" className="text-white hover:text-gray-300">Speltakken</Link>
-                                        </li>
-                                    </>
-                                )} */}
                             </ul>
                             <ul className="flex space-x-4">
                                 <li className="relative">
